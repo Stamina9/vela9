@@ -83,7 +83,7 @@ Get-FileHash .\vela9-0.1.0b1-cp312-cp312-win_amd64.whl -Algorithm SHA256
 
 - 在 [GitHub Issues](https://github.com/Stamina9/vela9/issues) 提交问题或建议。
 - 邮箱：[1934687883@qq.com](mailto:1934687883@qq.com)。
-- 微信：扫描下方二维码添加 **Stamina / 多哥**，备注“Vela9 试用反馈”。
+- 微信：扫描下方二维码添加 **Stamina**，备注“Vela9”。
 
 ![作者微信二维码](wechat.jpg)
 
