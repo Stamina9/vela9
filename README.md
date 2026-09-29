@@ -85,7 +85,7 @@ Get-FileHash .\vela9-0.1.0b1-cp312-cp312-win_amd64.whl -Algorithm SHA256
 - 邮箱：[1934687883@qq.com](mailto:1934687883@qq.com)。
 - 微信：扫描下方二维码添加 **Stamina / 多哥**，备注“Vela9 试用反馈”。
 
-![作者微信二维码](assets/wechat.jpg)
+![作者微信二维码](wechat.jpg)
 
 反馈时如果方便，请附上 Windows 版本、Python 版本、模型服务、你输入的任务、预期结果和实际结果。贴日志或截图前，请先删掉 API Key、个人文件内容和其他敏感信息。你最希望它下一版解决什么真实问题，也欢迎直接提出。
 
