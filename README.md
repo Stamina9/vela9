@@ -2,16 +2,16 @@
 
 **邀请你试用 Vela9，并告诉我它哪里好用、哪里不好用。**
 
-Vela9 是一个在你自己电脑上运行的轻量 coding agent。它能阅读和搜索你指定的代码目录、解释项目结构、协助定位报错、修改文件，并在你批准后运行命令。它同时提供终端命令和本地桌面窗口。现在是 **0.1.0 Beta 试用版**，欢迎开发者、学生和任何愿意给出真实反馈的朋友一起试。
+Vela9 是一个在你自己电脑上运行的轻量 coding agent。它能阅读和搜索你指定的代码目录、解释项目结构、协助定位报错、修改文件，并在你批准后运行命令。它同时提供终端命令和本地桌面窗口。当前是 **0.1.0 Beta 2**，新增可选的私有副本沙箱与人工审核回写。
 
 > 当前下载包仅支持 **Windows 64 位 + CPython 3.12**。项目代码在本机运行；选用在线模型时，相关请求会发送给你配置的模型服务。请只在自己拥有或获准处理的代码目录中使用。
 
 ## 下载
 
-在 [Releases 页面](https://github.com/Stamina9/vela9/releases/tag/v0.1.0-beta.1) 下载：
+在 [Releases 页面](https://github.com/Stamina9/vela9/releases/tag/v0.1.0-beta.2) 下载：
 
-- [`vela9-0.1.0b1-cp312-cp312-win_amd64.whl`](https://github.com/Stamina9/vela9/releases/download/v0.1.0-beta.1/vela9-0.1.0b1-cp312-cp312-win_amd64.whl)：安装包。
-- [`SHA256SUMS`](https://github.com/Stamina9/vela9/releases/download/v0.1.0-beta.1/SHA256SUMS)：安装包的完整性校验值。
+- [`vela9-0.1.0b2-cp312-cp312-win_amd64.whl`](https://github.com/Stamina9/vela9/releases/download/v0.1.0-beta.2/vela9-0.1.0b2-cp312-cp312-win_amd64.whl)：安装包。
+- [`SHA256SUMS`](https://github.com/Stamina9/vela9/releases/download/v0.1.0-beta.2/SHA256SUMS)：安装包的完整性校验值。
 
 `.whl` 是 Python 安装包，使用 `pip` 安装即可，**不必手动解压**。这个版本还没有上传 PyPI，所以不要运行 `pip install vela9` 来猜测同名包。PyPI 是 Python Package Index，即 Python 软件包索引；你可以把它理解成 Python 包的公开下载站。本次安装请使用上面的 GitHub Release 文件。
 
@@ -24,11 +24,11 @@ Vela9 是一个在你自己电脑上运行的轻量 coding agent。它能阅读�
 ```powershell
 cd "$HOME\Downloads"
 py -3.12 -m venv "$HOME\vela9-env"
-& "$HOME\vela9-env\Scripts\python.exe" -m pip install .\vela9-0.1.0b1-cp312-cp312-win_amd64.whl
+& "$HOME\vela9-env\Scripts\python.exe" -m pip install .\vela9-0.1.0b2-cp312-cp312-win_amd64.whl
 & "$HOME\vela9-env\Scripts\vela9.exe" --version
 ```
 
-看到 `Vela9 0.1.0b1` 就安装成功了。以上方式把 Vela9 安装在专门的虚拟环境里，无需管理员权限，也无需修改 PowerShell 执行策略。wheel 不包含 Python、模型权重、Docker 或在线模型额度。
+看到 `Vela9 0.1.0b2` 就安装成功了。以上方式把 Vela9 安装在专门的虚拟环境里，无需管理员权限，也无需修改 PowerShell 执行策略。wheel 不包含 Python、模型权重、Docker 或在线模型额度。
 
 ## 先用桌面窗口体验
 
@@ -64,7 +64,20 @@ $Vela = "$HOME\vela9-env\Scripts\vela9.exe"
 
 进入交互模式后输入 `/help` 查看会话命令，输入 `/exit` 退出。命令行使用在线模型时，可以在自己的项目根目录放置 `.env`，例如 `PICO_PROVIDER=deepseek` 与 `PICO_DEEPSEEK_API_KEY=你自己的密钥`；**不要把 `.env` 提交到 GitHub**。程序会向上查找最近的 `.env`，也要留意父目录中的旧配置。桌面窗口可直接临时输入 Key，初次体验更方便。
 
-安装了 Docker 的用户可以先执行 `docker pull python:3.12-slim`，再运行 `& $Vela --cwd "$HOME\vela9-demo" --sandbox docker`。该选项仅隔离 shell 命令，文件工具仍能修改所选目录；容器默认无网络。普通本地试用不需要 Docker。
+安装了 Docker 的用户可选择 `local`（默认）、`docker` 或 `isolated`。旧 `docker` 选项仅隔离 shell 命令，原目录仍被容器可写挂载，只适合受信任仓库。普通本地试用不需要 Docker。
+
+### 私有副本沙箱：先验证，再交付
+
+`isolated` 把文件读取、搜索、改写和 shell 六类工作区工具放在同一份私有副本中，由受限 OCI 容器执行。原目录不会被容器挂载；容器默认断网、非 root、只读根文件系统，有 CPU、内存、进程数、执行时间和副本容量限制。任务完成后 Vela9 显示差异，只有你单独审核并明确批准，才会把变更回写到原目录。若未批准，可稍后不加载模型重新审阅：
+
+```powershell
+wsl -d Ubuntu --exec docker image inspect python:3.12-slim
+& $Vela --cwd D:\your-repo --sandbox isolated --sandbox-runtime wsl "定位并修复局部错误"
+& $Vela sandbox-review latest --cwd D:\your-repo
+& $Vela sandbox-review latest --cwd D:\your-repo --apply
+```
+
+请先自行准备 Docker 和本地 `python:3.12-slim` 镜像；任务执行时不会自动拉取镜像。Windows 示例使用 Ubuntu WSL 中的 Docker，私有副本默认放在所选仓库的 `.pico/sandbox-runs/`，请选有足够空间的工作盘。副本不会复制 `.git`、`.env` 等敏感或大体量目录，因此容器内不能依赖 Git 元数据。可用 `--sandbox-verify-command "python -m unittest discover -s tests"` 在回写前运行离线验证。源文件在审阅期间被改动会触发冲突并阻止回写。沙箱不是防病毒保证；当前仅在本机 Windows + Ubuntu WSL Docker 验证，MicroVM 尚未实现。
 
 ## 核对下载文件
 
@@ -72,7 +85,7 @@ $Vela = "$HOME\vela9-env\Scripts\vela9.exe"
 
 ```powershell
 Get-Content .\SHA256SUMS
-Get-FileHash .\vela9-0.1.0b1-cp312-cp312-win_amd64.whl -Algorithm SHA256
+Get-FileHash .\vela9-0.1.0b2-cp312-cp312-win_amd64.whl -Algorithm SHA256
 ```
 
 两个哈希值应完全相同。不一致时停止安装，重新从本仓库的 Release 页面下载。
