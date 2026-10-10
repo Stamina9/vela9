@@ -95,10 +95,15 @@ Get-FileHash .\vela9-0.1.0b2-cp312-cp312-win_amd64.whl -Algorithm SHA256
 如果 Vela9 帮你理解了一个仓库、定位了错误，或者在哪一步卡住了，都欢迎告诉我。**小问题、体验建议和失败案例都很有用。**
 
 - 在 [GitHub Issues](https://github.com/Stamina9/vela9/issues) 提交问题或建议。
+- 邮箱：[1934687883@qq.com](mailto:1934687883@qq.com)。
+- 微信：扫描下方二维码添加 **Stamina**，备注“Vela9”。
+
+![作者微信二维码](wechat.jpg)
+
 反馈时如果方便，请附上 Windows 版本、Python 版本、模型服务、你输入的任务、预期结果和实际结果。贴日志或截图前，请先删掉 API Key、个人文件内容和其他敏感信息。你最希望它下一版解决什么真实问题，也欢迎直接提出。
 
 ## 关于发布形式
 
-本仓库放置使用说明、许可证和 Release 安装文件，**不放 Pico/Vela9 的实现源码**。Beta wheel 的实现模块已编译为 Windows 扩展；编译发布并不意味着绝对无法逆向分析。这个版本仍在试用阶段，欢迎一起发现问题、推动下一版改进。
+本仓库放置使用说明、联系二维码、许可证和 Release 安装文件，**不放 Pico/Vela9 的实现源码**。Beta wheel 的实现模块已编译为 Windows 扩展；编译发布并不意味着绝对无法逆向分析。这个版本仍在试用阶段，欢迎一起发现问题、推动下一版改进。
 
 许可：MIT，见 [LICENSE](LICENSE)。
